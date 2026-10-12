@@ -37,14 +37,14 @@ public abstract class VillagerEntityMixin {
         if (player.isSneaking() && Money.value(held) > 0 && account.poverty$getDebt() > 0) {
             long amount = Math.min(Money.value(held), account.poverty$getDebt());
             long paid = Money.take(serverPlayer, amount);
-            Bank.repay((ServerWorld) self.getWorld(), serverPlayer, paid);
-            self.getWorld().playSound(null, self.getBlockPos(), SoundEvents.ENTITY_VILLAGER_YES, SoundCategory.NEUTRAL, 1f, 1f);
+            Bank.repay((ServerWorld) self.getEntityWorld(), serverPlayer, paid);
+            self.getEntityWorld().playSound(null, self.getBlockPos(), SoundEvents.ENTITY_VILLAGER_YES, SoundCategory.NEUTRAL, 1f, 1f);
             cir.setReturnValue(ActionResult.SUCCESS);
             return;
         }
         if (account.poverty$getUnpaidDays() >= Bank.BLACKLIST_AFTER_DAYS) {
             self.setHeadRollingTimeLeft(40);
-            self.getWorld().playSound(null, self.getBlockPos(), SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.NEUTRAL, 1f, 0.8f);
+            self.getEntityWorld().playSound(null, self.getBlockPos(), SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.NEUTRAL, 1f, 0.8f);
             player.sendMessage(Text.literal("« Tu es fiché. Rembourse d'abord tes " + account.poverty$getArrears()
                 + " émeraudes d'impayés. »").formatted(Formatting.RED), true);
             cir.setReturnValue(ActionResult.SUCCESS);

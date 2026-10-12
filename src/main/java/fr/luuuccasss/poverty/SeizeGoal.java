@@ -59,7 +59,7 @@ public class SeizeGoal extends Goal {
 
     @Override
     public void tick() {
-        ServerWorld world = (ServerWorld) bailiff.getWorld();
+        ServerWorld world = (ServerWorld) bailiff.getEntityWorld();
         closeChest(world);
         if (leaving >= 0) {
             leave(world);
@@ -86,7 +86,7 @@ public class SeizeGoal extends Goal {
         if (chest == null || !hasSomething(world, chest)) chest = findChest(world, debtor);
         if (chest != null) {
             bailiff.getLookControl().lookAt(Vec3d.ofCenter(chest));
-            if (bailiff.getPos().squaredDistanceTo(Vec3d.ofBottomCenter(chest)) > 4.5) {
+            if (bailiff.getEntityPos().squaredDistanceTo(Vec3d.ofBottomCenter(chest)) > 4.5) {
                 if (bailiff.age % 10 == 0) bailiff.getNavigation().startMovingTo(chest.getX() + 0.5, chest.getY(), chest.getZ() + 0.5, 1.0);
                 return;
             }
@@ -107,7 +107,7 @@ public class SeizeGoal extends Goal {
         UUID id = Bailiff.creditor(bailiff).orElse(null);
         if (id == null) return null;
         ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(id);
-        if (player == null || player.getWorld() != world || player.isSpectator()) return null;
+        if (player == null || player.getEntityWorld() != world || player.isSpectator()) return null;
         return player;
     }
 
@@ -210,11 +210,11 @@ public class SeizeGoal extends Goal {
         if (debtor != null && message != null) debtor.sendMessage(Text.literal(message).formatted(Formatting.GRAY), false);
         chest = null;
         leaving = 0;
-        Bailiff.creditor(bailiff).ifPresent(id -> Bailiff.leftFrom(id, bailiff.getWorld().getTime()));
+        Bailiff.creditor(bailiff).ifPresent(id -> Bailiff.leftFrom(id, bailiff.getEntityWorld().getTime()));
         if (debtor != null) {
-            Vec3d away = bailiff.getPos().subtract(debtor.getPos()).multiply(1, 0, 1);
+            Vec3d away = bailiff.getEntityPos().subtract(debtor.getEntityPos()).multiply(1, 0, 1);
             if (away.lengthSquared() < 1.0E-4) away = new Vec3d(1, 0, 0);
-            Vec3d target = bailiff.getPos().add(away.normalize().multiply(32));
+            Vec3d target = bailiff.getEntityPos().add(away.normalize().multiply(32));
             bailiff.getNavigation().startMovingTo(target.x, target.y, target.z, 1.0);
         }
     }

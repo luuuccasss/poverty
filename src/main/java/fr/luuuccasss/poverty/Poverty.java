@@ -29,7 +29,7 @@ public class Poverty implements ModInitializer {
             if (!(entity instanceof ZombieVillagerEntity bailiff) || !bailiff.getCommandTags().contains(Bailiff.TAG)) return;
             ServerPlayerEntity killer = source.getAttacker() instanceof ServerPlayerEntity p ? p : null;
             for (PrioritizedGoal goal : ((MobEntityAccessor) bailiff).poverty$goals().getGoals()) {
-                if (goal.getGoal() instanceof SeizeGoal seize) seize.onKilledBy((ServerWorld) bailiff.getWorld(), killer);
+                if (goal.getGoal() instanceof SeizeGoal seize) seize.onKilledBy((ServerWorld) bailiff.getEntityWorld(), killer);
             }
         });
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> Bailiff.forget(handler.getPlayer()));
