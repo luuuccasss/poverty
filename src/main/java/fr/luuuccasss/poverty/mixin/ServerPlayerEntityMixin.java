@@ -1,8 +1,9 @@
 package fr.luuuccasss.poverty.mixin;
 
 import fr.luuuccasss.poverty.Indebted;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -58,24 +59,23 @@ public abstract class ServerPlayerEntityMixin implements Indebted {
         poverty$lastDay = day;
     }
 
-    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-    private void poverty$write(NbtCompound nbt, CallbackInfo ci) {
-        NbtCompound account = new NbtCompound();
+    @Inject(method = "writeCustomData", at = @At("TAIL"))
+    private void poverty$write(WriteView view, CallbackInfo ci) {
+        WriteView account = view.get("Poverty");
         account.putLong("Debt", poverty$debt);
         account.putLong("Arrears", poverty$arrears);
         account.putInt("UnpaidDays", poverty$unpaidDays);
         account.putLong("LastDay", poverty$lastDay);
-        nbt.put("Poverty", account);
     }
 
-    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    private void poverty$read(NbtCompound nbt, CallbackInfo ci) {
-        if (!nbt.contains("Poverty")) return;
-        NbtCompound account = nbt.getCompoundOrEmpty("Poverty");
-        poverty$debt = account.getLong("Debt", 0L);
-        poverty$arrears = account.getLong("Arrears", 0L);
-        poverty$unpaidDays = account.getInt("UnpaidDays", 0);
-        poverty$lastDay = account.getLong("LastDay", -1L);
+    @Inject(method = "readCustomData", at = @At("TAIL"))
+    private void poverty$read(ReadView view, CallbackInfo ci) {
+        view.getOptionalReadView("Poverty").ifPresent(account -> {
+            poverty$debt = account.getLong("Debt", 0L);
+            poverty$arrears = account.getLong("Arrears", 0L);
+            poverty$unpaidDays = account.getInt("UnpaidDays", 0);
+            poverty$lastDay = account.getLong("LastDay", -1L);
+        });
     }
 
     /** La dette ne meurt pas avec toi. */
