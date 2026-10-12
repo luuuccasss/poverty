@@ -1,7 +1,7 @@
 package fr.luuuccasss.poverty.mixin;
 
 import fr.luuuccasss.poverty.client.BailiffRenderState;
-import net.minecraft.client.render.entity.state.ZombieVillagerRenderState;
+import net.minecraft.client.renderer.entity.state.ZombieVillagerRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
