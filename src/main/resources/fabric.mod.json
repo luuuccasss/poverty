@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "poverty",
+  "version": "${version}",
+  "name": "Pauvreté",
+  "description": "Tu commences endetté de 10 000 émeraudes. Les villageois prélèvent des intérêts chaque jour, et un huissier zombie vient saisir tes coffres si tu ne paies pas.",
+  "authors": [
+    "luuuccasss"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fr.luuuccasss.poverty.Poverty"
+    ],
+    "client": [
+      "fr.luuuccasss.poverty.client.PovertyClient"
+    ]
+  },
+  "mixins": [
+    "poverty.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.21 <1.21.2",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
