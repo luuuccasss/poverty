@@ -14,21 +14,20 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ZombieVillagerEntityModel;
+import net.minecraft.client.render.entity.state.ZombieVillagerRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.mob.ZombieVillagerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 
 /** Haut-de-forme et mallette de l'huissier, pour les joueurs qui ont le mod. */
-public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerEntity, ZombieVillagerEntityModel<ZombieVillagerEntity>> {
+public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerRenderState, ZombieVillagerEntityModel<ZombieVillagerRenderState>> {
     private static final Identifier TEXTURE = Identifier.of(Poverty.MOD_ID, "textures/entity/huissier.png");
     private static final String NAME = "Huissier de justice";
 
     private final ModelPart hat;
     private final ModelPart briefcase;
 
-    public BailiffFeatureRenderer(FeatureRendererContext<ZombieVillagerEntity, ZombieVillagerEntityModel<ZombieVillagerEntity>> context) {
+    public BailiffFeatureRenderer(FeatureRendererContext<ZombieVillagerRenderState, ZombieVillagerEntityModel<ZombieVillagerRenderState>> context) {
         super(context);
         ModelData data = new ModelData();
         ModelPartData root = data.getRoot();
@@ -43,15 +42,15 @@ public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerEntity
         briefcase = model.getChild("briefcase");
     }
 
-    public static boolean isBailiff(ZombieVillagerEntity entity) {
-        Text name = entity.getCustomName();
-        return name != null && NAME.equals(name.getString());
+    /** Le nom affiché au-dessus de sa tête : seul indice côté client que c'est bien l'huissier. */
+    public static boolean isBailiff(ZombieVillagerRenderState state) {
+        return state.displayName != null && NAME.equals(state.displayName.getString());
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ZombieVillagerEntity entity,
-                       float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (!isBailiff(entity) || entity.isInvisible()) return;
+    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ZombieVillagerRenderState state,
+                       float limbAngle, float limbDistance) {
+        if (!isBailiff(state) || state.invisible) return;
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(TEXTURE));
         int overlay = OverlayTexture.DEFAULT_UV;
 
