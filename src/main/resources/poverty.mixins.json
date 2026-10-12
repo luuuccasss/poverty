@@ -4,5 +4,6 @@
   "package": "fr.luuuccasss.poverty.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": ["MobEntityAccessor", "ServerPlayerEntityMixin", "VillagerEntityMixin"],
+  "client": ["ZombieVillagerEntityRendererMixin", "ZombieVillagerRenderStateMixin"],
   "injectors": { "defaultRequire": 1 }
 }

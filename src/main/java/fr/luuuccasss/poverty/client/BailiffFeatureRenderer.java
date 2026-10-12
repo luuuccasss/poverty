@@ -16,6 +16,8 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ZombieVillagerEntityModel;
 import net.minecraft.client.render.entity.state.ZombieVillagerRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.mob.ZombieVillagerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 
@@ -42,15 +44,15 @@ public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerRender
         briefcase = model.getChild("briefcase");
     }
 
-    /** Le nom affiché au-dessus de sa tête : seul indice côté client que c'est bien l'huissier. */
-    public static boolean isBailiff(ZombieVillagerRenderState state) {
-        return state.displayName != null && NAME.equals(state.displayName.getString());
+    public static boolean isBailiff(ZombieVillagerEntity entity) {
+        Text name = entity.getCustomName();
+        return name != null && NAME.equals(name.getString());
     }
 
     @Override
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ZombieVillagerRenderState state,
                        float limbAngle, float limbDistance) {
-        if (!isBailiff(state) || state.invisible) return;
+        if (!((BailiffRenderState) state).poverty$isBailiff() || state.invisible) return;
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(TEXTURE));
         int overlay = OverlayTexture.DEFAULT_UV;
 
