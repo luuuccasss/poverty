@@ -71,11 +71,11 @@ public abstract class ServerPlayerEntityMixin implements Indebted {
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     private void poverty$read(NbtCompound nbt, CallbackInfo ci) {
         if (!nbt.contains("Poverty")) return;
-        NbtCompound account = nbt.getCompound("Poverty");
-        poverty$debt = account.getLong("Debt");
-        poverty$arrears = account.getLong("Arrears");
-        poverty$unpaidDays = account.getInt("UnpaidDays");
-        poverty$lastDay = account.getLong("LastDay");
+        NbtCompound account = nbt.getCompoundOrEmpty("Poverty");
+        poverty$debt = account.getLong("Debt", 0L);
+        poverty$arrears = account.getLong("Arrears", 0L);
+        poverty$unpaidDays = account.getInt("UnpaidDays", 0);
+        poverty$lastDay = account.getLong("LastDay", -1L);
     }
 
     /** La dette ne meurt pas avec toi. */
