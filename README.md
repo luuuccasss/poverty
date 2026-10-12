@@ -1,6 +1,6 @@
 # Pauvreté
 
-Mod Fabric pour Minecraft 1.21.11. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
+Mod Fabric pour Minecraft 26.3. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
 
 ![L'huissier de justice, en haut-de-forme avec sa mallette](docs/huissier.png)
 
@@ -62,7 +62,7 @@ Les remboursements servent d'abord à éponger les impayés. Quand tout est remb
 
 ## Installation
 
-1. Installer [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.21.11.
+1. Installer [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 26.3.
 2. Mettre [Fabric API](https://modrinth.com/mod/fabric-api) et le jar des [Releases](https://github.com/luuuccasss/poverty/releases) dans le dossier `mods/`.
 
 Le mod s'installe **sur le serveur**. Côté joueurs, il est **facultatif** : sans le mod, l'huissier est un zombie en costume ; avec le mod, il porte en plus un haut-de-forme et une mallette en 3D. Il marche aussi en solo.
