@@ -26,9 +26,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.village.VillagerData;
 import net.minecraft.village.VillagerProfession;
-import net.minecraft.village.VillagerType;
 import net.minecraft.world.Heightmap;
 
 /** L'huissier de justice : un zombie en costume qui vient saisir les biens des mauvais payeurs. */
@@ -75,7 +73,7 @@ public final class Bailiff {
         if (bailiff == null) return null;
         BlockPos pos = spawnPos(world, player);
         bailiff.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360, 0);
-        bailiff.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.LIBRARIAN, 5));
+        bailiff.setVillagerData(bailiff.getVillagerData().withProfession(world.getRegistryManager(), VillagerProfession.LIBRARIAN).withLevel(5));
         bailiff.setBaby(false);
         bailiff.setCustomName(Text.literal("Huissier de justice").formatted(Formatting.DARK_GRAY));
         bailiff.setCustomNameVisible(true);
@@ -140,7 +138,7 @@ public final class Bailiff {
 
     private static ItemStack suit(net.minecraft.item.Item piece) {
         ItemStack stack = new ItemStack(piece);
-        stack.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(0x1E1E24, false));
+        stack.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(0x1E1E24));
         return stack;
     }
 
