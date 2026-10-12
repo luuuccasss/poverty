@@ -57,7 +57,7 @@ public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerRender
         int overlay = OverlayTexture.DEFAULT_UV;
 
         matrices.push();
-        getContextModel().getHead().rotate(matrices);
+        getContextModel().getHead().applyTransform(matrices);
         hat.render(matrices, consumer, light, overlay);
         matrices.pop();
 
