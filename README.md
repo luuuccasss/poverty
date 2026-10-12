@@ -1,6 +1,6 @@
 # Pauvreté
 
-Mod Fabric pour Minecraft 1.21.2 – 1.21.4. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
+Mod Fabric pour Minecraft 1.21.5. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
 
 ![L'huissier de justice, en haut-de-forme avec sa mallette](docs/huissier.png)
 
