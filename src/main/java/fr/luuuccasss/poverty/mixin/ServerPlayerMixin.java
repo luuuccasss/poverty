@@ -1,17 +1,17 @@
 package fr.luuuccasss.poverty.mixin;
 
 import fr.luuuccasss.poverty.Indebted;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin implements Indebted {
+@Mixin(ServerPlayer.class)
+public abstract class ServerPlayerMixin implements Indebted {
     @Unique private long poverty$debt;
     @Unique private long poverty$arrears;
     @Unique private int poverty$unpaidDays;
@@ -59,28 +59,28 @@ public abstract class ServerPlayerEntityMixin implements Indebted {
         poverty$lastDay = day;
     }
 
-    @Inject(method = "writeCustomData", at = @At("TAIL"))
-    private void poverty$write(WriteView view, CallbackInfo ci) {
-        WriteView account = view.get("Poverty");
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void poverty$write(ValueOutput output, CallbackInfo ci) {
+        ValueOutput account = output.child("Poverty");
         account.putLong("Debt", poverty$debt);
         account.putLong("Arrears", poverty$arrears);
         account.putInt("UnpaidDays", poverty$unpaidDays);
         account.putLong("LastDay", poverty$lastDay);
     }
 
-    @Inject(method = "readCustomData", at = @At("TAIL"))
-    private void poverty$read(ReadView view, CallbackInfo ci) {
-        view.getOptionalReadView("Poverty").ifPresent(account -> {
-            poverty$debt = account.getLong("Debt", 0L);
-            poverty$arrears = account.getLong("Arrears", 0L);
-            poverty$unpaidDays = account.getInt("UnpaidDays", 0);
-            poverty$lastDay = account.getLong("LastDay", -1L);
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void poverty$read(ValueInput input, CallbackInfo ci) {
+        input.child("Poverty").ifPresent(account -> {
+            poverty$debt = account.getLongOr("Debt", 0L);
+            poverty$arrears = account.getLongOr("Arrears", 0L);
+            poverty$unpaidDays = account.getIntOr("UnpaidDays", 0);
+            poverty$lastDay = account.getLongOr("LastDay", -1L);
         });
     }
 
     /** La dette ne meurt pas avec toi. */
-    @Inject(method = "copyFrom", at = @At("TAIL"))
-    private void poverty$copyFrom(ServerPlayerEntity old, boolean alive, CallbackInfo ci) {
+    @Inject(method = "restoreFrom", at = @At("TAIL"))
+    private void poverty$restoreFrom(ServerPlayer old, boolean alive, CallbackInfo ci) {
         Indebted from = (Indebted) old;
         poverty$debt = from.poverty$getDebt();
         poverty$arrears = from.poverty$getArrears();
