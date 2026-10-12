@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -15,6 +13,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -139,7 +138,7 @@ public final class Bailiff {
 
     private static ItemStack suit(net.minecraft.item.Item piece) {
         ItemStack stack = new ItemStack(piece);
-        stack.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(0x1E1E24, false));
+        if (stack.getItem() instanceof DyeableItem dyeable) dyeable.setColor(stack, 0x1E1E24);
         return stack;
     }
 

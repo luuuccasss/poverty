@@ -22,7 +22,7 @@ import net.minecraft.util.Identifier;
 
 /** Haut-de-forme et mallette de l'huissier, pour les joueurs qui ont le mod. */
 public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerEntity, ZombieVillagerEntityModel<ZombieVillagerEntity>> {
-    private static final Identifier TEXTURE = Identifier.of(Poverty.MOD_ID, "textures/entity/huissier.png");
+    private static final Identifier TEXTURE = new Identifier(Poverty.MOD_ID, "textures/entity/huissier.png");
     private static final String NAME = "Huissier de justice";
 
     private final ModelPart hat;
