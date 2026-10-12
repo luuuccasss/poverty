@@ -10,6 +10,7 @@ import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -70,7 +71,7 @@ public final class Bailiff {
     }
 
     public static ZombieVillagerEntity send(ServerWorld world, ServerPlayerEntity player) {
-        ZombieVillagerEntity bailiff = EntityType.ZOMBIE_VILLAGER.create(world);
+        ZombieVillagerEntity bailiff = EntityType.ZOMBIE_VILLAGER.create(world, SpawnReason.EVENT);
         if (bailiff == null) return null;
         BlockPos pos = spawnPos(world, player);
         bailiff.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360, 0);
@@ -80,9 +81,9 @@ public final class Bailiff {
         bailiff.setCustomNameVisible(true);
         bailiff.setPersistent();
         bailiff.setCanPickUpLoot(false);
-        bailiff.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(40);
+        bailiff.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(40);
         bailiff.setHealth(40);
-        bailiff.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).setBaseValue(0.3);
+        bailiff.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED).setBaseValue(0.3);
         bailiff.equipStack(EquipmentSlot.HEAD, suit(Items.LEATHER_HELMET));
         bailiff.equipStack(EquipmentSlot.CHEST, suit(Items.LEATHER_CHESTPLATE));
         bailiff.equipStack(EquipmentSlot.LEGS, suit(Items.LEATHER_LEGGINGS));
