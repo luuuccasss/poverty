@@ -9,8 +9,8 @@ import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ZombieVillagerEntityModel;
@@ -50,22 +50,22 @@ public class BailiffFeatureRenderer extends FeatureRenderer<ZombieVillagerRender
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ZombieVillagerRenderState state,
+    public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light, ZombieVillagerRenderState state,
                        float limbAngle, float limbDistance) {
         if (!((BailiffRenderState) state).poverty$isBailiff() || state.invisible) return;
-        VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(TEXTURE));
+        RenderLayer layer = RenderLayers.entityCutoutNoCull(TEXTURE);
         int overlay = OverlayTexture.DEFAULT_UV;
 
         matrices.push();
         getContextModel().getHead().applyTransform(matrices);
-        hat.render(matrices, consumer, light, overlay);
+        queue.submitModelPart(hat, matrices, layer, light, overlay, null);
         matrices.pop();
 
         // mallette pendue à la main gauche
         matrices.push();
-        getContextModel().setArmAngle(Arm.LEFT, matrices);
+        getContextModel().setArmAngle(state, Arm.LEFT, matrices);
         matrices.translate(1 / 16f, 11 / 16f, 0);
-        briefcase.render(matrices, consumer, light, overlay);
+        queue.submitModelPart(briefcase, matrices, layer, light, overlay, null);
         matrices.pop();
     }
 }
