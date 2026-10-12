@@ -1,6 +1,6 @@
 # Pauvreté
 
-Mod Fabric pour Minecraft 1.21 – 1.21.1. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
+Mod Fabric pour Minecraft 1.20.1 à 26.3. Tu commences la partie avec **10 000 émeraudes de dette**. Chaque jour, les villageois prélèvent les intérêts dans ton inventaire, et si tu ne paies pas, un **huissier zombie** vient saisir tes coffres.
 
 ![L'huissier de justice, en haut-de-forme avec sa mallette](docs/huissier.png)
 
@@ -60,10 +60,23 @@ Les remboursements servent d'abord à éponger les impayés. Quand tout est remb
 | `/dette jour <joueur>` | Faire passer un jour d'intérêts (op) |
 | `/dette huissier <joueur>` | Envoyer l'huissier tout de suite (op) |
 
+## Versions
+
+| Minecraft | Téléchargement | Branche |
+|---|---|---|
+| 26.3 | [1.0.0+26.3](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B26.3) | [`26.3`](https://github.com/luuuccasss/poverty/tree/26.3) |
+| 26.1 – 26.2 | [1.0.0+26.1](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B26.1) | [`26.1`](https://github.com/luuuccasss/poverty/tree/26.1) |
+| 1.21.11 | [1.0.0+1.21.11](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.21.11) | [`1.21.11`](https://github.com/luuuccasss/poverty/tree/1.21.11) |
+| 1.21.6 – 1.21.8 | [1.0.0+1.21.8](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.21.8) | [`1.21.8`](https://github.com/luuuccasss/poverty/tree/1.21.8) |
+| 1.21.5 | [1.0.0+1.21.5](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.21.5) | [`1.21.5`](https://github.com/luuuccasss/poverty/tree/1.21.5) |
+| 1.21.2 – 1.21.4 | [1.0.0+1.21.4](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.21.4) | [`1.21.4`](https://github.com/luuuccasss/poverty/tree/1.21.4) |
+| 1.21 – 1.21.1 | [1.0.0+1.21.1](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.21.1) | [`1.21.1`](https://github.com/luuuccasss/poverty/tree/1.21.1) |
+| 1.20.1 | [1.0.0+1.20.1](https://github.com/luuuccasss/poverty/releases/tag/1.0.0%2B1.20.1) | [`1.20.1`](https://github.com/luuuccasss/poverty/tree/1.20.1) |
+
 ## Installation
 
-1. Installer [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.21 ou 1.21.1.
-2. Mettre [Fabric API](https://modrinth.com/mod/fabric-api) et le jar des [Releases](https://github.com/luuuccasss/poverty/releases) dans le dossier `mods/`.
+1. Installer [Fabric Loader](https://fabricmc.net/use/) pour ta version de Minecraft.
+2. Mettre [Fabric API](https://modrinth.com/mod/fabric-api) et le jar de ta version (tableau ci-dessus) dans le dossier `mods/`.
 
 Le mod s'installe **sur le serveur**. Côté joueurs, il est **facultatif** : sans le mod, l'huissier est un zombie en costume ; avec le mod, il porte en plus un haut-de-forme et une mallette en 3D. Il marche aussi en solo.
 
