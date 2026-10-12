@@ -6,6 +6,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.server.command.ServerCommandSource;
@@ -32,29 +33,29 @@ public final class DebtCommand {
                 .then(argument("montant", LongArgumentType.longArg(1))
                     .executes(ctx -> pay(ctx.getSource(), LongArgumentType.getLong(ctx, "montant")))))
             .then(argument("joueur", EntityArgumentType.player())
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .executes(ctx -> show(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "joueur"))))
             .then(literal("set")
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .then(argument("joueur", EntityArgumentType.player())
                     .then(argument("montant", LongArgumentType.longArg(0))
                         .executes(ctx -> {
                             ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "joueur");
                             Indebted account = (Indebted) target;
-                            if (account.poverty$getLastDay() < 0) account.poverty$setLastDay(Bank.today(target.getWorld()));
+                            if (account.poverty$getLastDay() < 0) account.poverty$setLastDay(Bank.today(target.getEntityWorld()));
                             account.poverty$setDebt(LongArgumentType.getLong(ctx, "montant"));
                             return show(ctx.getSource(), target);
                         }))))
             .then(literal("jour")
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .then(argument("joueur", EntityArgumentType.player())
                     .executes(ctx -> {
                         ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "joueur");
-                        Bank.newDay(target.getWorld(), target);
+                        Bank.newDay(target.getEntityWorld(), target);
                         return show(ctx.getSource(), target);
                     })))
             .then(literal("huissier")
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .then(argument("joueur", EntityArgumentType.player())
                     .executes(ctx -> {
                         ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "joueur");
@@ -64,8 +65,8 @@ public final class DebtCommand {
                             account.poverty$setArrears(amount);
                         }
                         account.poverty$setUnpaidDays(Math.max(account.poverty$getUnpaidDays(), Bank.BAILIFF_AFTER_DAYS));
-                        Bailiff.find(target.getWorld(), target).ifPresent(b -> b.discard());
-                        Bailiff.send(target.getWorld(), target);
+                        Bailiff.find(target.getEntityWorld(), target).ifPresent(b -> b.discard());
+                        Bailiff.send(target.getEntityWorld(), target);
                         return 1;
                     }))));
     }
@@ -90,7 +91,7 @@ public final class DebtCommand {
 
     private static int pay(ServerCommandSource source, long amount) throws CommandSyntaxException {
         ServerPlayerEntity player = source.getPlayerOrThrow();
-        if (player.getWorld().getEntitiesByClass(VillagerEntity.class, player.getBoundingBox().expand(8),
+        if (player.getEntityWorld().getEntitiesByClass(VillagerEntity.class, player.getBoundingBox().expand(8),
             v -> v.isAlive() && !v.isBaby()).isEmpty()) {
             source.sendError(Text.literal("La banque, c'est les villageois : approche-toi de l'un d'eux pour payer."));
             return 0;
@@ -101,7 +102,7 @@ public final class DebtCommand {
             source.sendError(Text.literal("Tu n'as pas d'émeraudes sur toi."));
             return 0;
         }
-        Bank.repay(player.getWorld(), player, paid);
+        Bank.repay(player.getEntityWorld(), player, paid);
         return (int) paid;
     }
 }
