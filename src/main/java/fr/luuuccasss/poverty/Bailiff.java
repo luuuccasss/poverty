@@ -8,7 +8,9 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -16,7 +18,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -36,6 +38,11 @@ public final class Bailiff {
     private static final String CREDITOR_TAG = "poverty.pour.";
     /** Frais d'huissier, en part des impayés, ajoutés à son arrivée. */
     private static final double FEES = 0.10;
+
+    /** Pris dans le registre : la constante a changé de classe entre 26.1 et 26.2. */
+    @SuppressWarnings("unchecked")
+    private static final EntityType<ZombieVillager> ZOMBIE_VILLAGER =
+        (EntityType<ZombieVillager>) BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.withDefaultNamespace("zombie_villager"));
 
     /** Délai entre deux passages, quand l'huissier est reparti sans tout récupérer : une demi-journée. */
     private static final long REVISIT_DELAY = 12000;
@@ -70,7 +77,7 @@ public final class Bailiff {
     }
 
     public static ZombieVillager send(ServerLevel level, ServerPlayer player) {
-        ZombieVillager bailiff = EntityTypes.ZOMBIE_VILLAGER.create(level, EntitySpawnReason.EVENT);
+        ZombieVillager bailiff = ZOMBIE_VILLAGER.create(level, EntitySpawnReason.EVENT);
         if (bailiff == null) return null;
         BlockPos pos = spawnPos(level, player);
         bailiff.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360, 0);
