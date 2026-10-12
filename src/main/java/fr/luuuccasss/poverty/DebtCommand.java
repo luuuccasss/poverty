@@ -41,7 +41,7 @@ public final class DebtCommand {
                         .executes(ctx -> {
                             ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "joueur");
                             Indebted account = (Indebted) target;
-                            if (account.poverty$getLastDay() < 0) account.poverty$setLastDay(Bank.today(target.getServerWorld()));
+                            if (account.poverty$getLastDay() < 0) account.poverty$setLastDay(Bank.today(target.getWorld()));
                             account.poverty$setDebt(LongArgumentType.getLong(ctx, "montant"));
                             return show(ctx.getSource(), target);
                         }))))
@@ -50,7 +50,7 @@ public final class DebtCommand {
                 .then(argument("joueur", EntityArgumentType.player())
                     .executes(ctx -> {
                         ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "joueur");
-                        Bank.newDay(target.getServerWorld(), target);
+                        Bank.newDay(target.getWorld(), target);
                         return show(ctx.getSource(), target);
                     })))
             .then(literal("huissier")
@@ -64,8 +64,8 @@ public final class DebtCommand {
                             account.poverty$setArrears(amount);
                         }
                         account.poverty$setUnpaidDays(Math.max(account.poverty$getUnpaidDays(), Bank.BAILIFF_AFTER_DAYS));
-                        Bailiff.find(target.getServerWorld(), target).ifPresent(b -> b.discard());
-                        Bailiff.send(target.getServerWorld(), target);
+                        Bailiff.find(target.getWorld(), target).ifPresent(b -> b.discard());
+                        Bailiff.send(target.getWorld(), target);
                         return 1;
                     }))));
     }
@@ -90,7 +90,7 @@ public final class DebtCommand {
 
     private static int pay(ServerCommandSource source, long amount) throws CommandSyntaxException {
         ServerPlayerEntity player = source.getPlayerOrThrow();
-        if (player.getServerWorld().getEntitiesByClass(VillagerEntity.class, player.getBoundingBox().expand(8),
+        if (player.getWorld().getEntitiesByClass(VillagerEntity.class, player.getBoundingBox().expand(8),
             v -> v.isAlive() && !v.isBaby()).isEmpty()) {
             source.sendError(Text.literal("La banque, c'est les villageois : approche-toi de l'un d'eux pour payer."));
             return 0;
@@ -101,7 +101,7 @@ public final class DebtCommand {
             source.sendError(Text.literal("Tu n'as pas d'émeraudes sur toi."));
             return 0;
         }
-        Bank.repay(player.getServerWorld(), player, paid);
+        Bank.repay(player.getWorld(), player, paid);
         return (int) paid;
     }
 }
