@@ -1,12 +1,12 @@
 package fr.luuuccasss.poverty.mixin;
 
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(MobEntity.class)
-public interface MobEntityAccessor {
+@Mixin(Mob.class)
+public interface MobAccessor {
     @Accessor("goalSelector")
     GoalSelector poverty$goals();
 
